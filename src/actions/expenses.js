@@ -1,5 +1,6 @@
 import uuid from 'uuid';
 import database from '../firebase/firebase';
+import { doesNotReject } from 'assert';
 
 export const addExpense = (expense) => ({
     type: 'ADD_EXPENSE',
@@ -60,4 +61,16 @@ export const startSetExpenses = () => {
             dispatch(setExpenses(expenses));
         });
     };
+};
+
+// START_REMOVE_EXPENSE
+export const startRemoveExpense = ({ id } = {}) => {
+    return (dispatch) => {
+
+      return database.ref(`expenses/${id}`)
+        .remove()
+        .then(() => {
+            dispatch(removeExpense({ id }));
+      });
+    }
 };
